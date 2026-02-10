@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Ti 💌</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, 
+                #fff0f3 0%, 
+                #ffe6ea 25%, 
+                #ffd6e0 50%, 
+                #ffccd5 75%, 
+                #ffb3c6 100%);
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            color: #590d22;
+            cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath fill='%23ff4d6d' d='M16 2C8.3 2 2 8.3 2 16s6.3 14 14 14 14-6.3 14-14S23.7 2 16 2zm0 24c-5.5 0-10-4.5-10-10S10.5 6 16 6s10 4.5 10 10-4.5 10-10 10z'/%3E%3Cpath fill='%23ff4d6d' d='M16 10c-3.3 0-6 2.7-6 6s2.7 6 6 6 6-2.7 6-6-2.7-6-6-6z'/%3E%3C/svg%3E"), auto;
+        }
+
+        /* CORAZONES DE FONDO */
+        .background-hearts-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .floating-heart {
+            position: absolute;
+            font-size: 28px;
+            opacity: 0.4;
+            filter: drop-shadow(0 2px 8px rgba(255, 77, 109, 0.25));
+            animation: floatAround 25s infinite linear;
+        }
+
+        @keyframes floatAround {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            25% {
+                transform: translate(40px, 30px) rotate(90deg);
+            }
+            50% {
+                transform: translate(0, 60px) rotate(180deg);
+            }
+            75% {
+                transform: translate(-40px, 30px) rotate(270deg);
+            }
+            100% {
+                transform: translate(0, 0) rotate(360deg);
+            }
+        }
+
+        .falling-heart-bg {
+            position: absolute;
+            font-size: 24px;
+            opacity: 0;
+            filter: drop-shadow(0 3px 10px rgba(255, 77, 109, 0.3));
+            animation: fallHeartBg linear infinite;
+        }
+
+        @keyframes fallHeartBg {
+            0% {
+                transform: translateY(-100px) translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.5;
+            }
+            90% {
+                opacity: 0.5;
+            }
+            100% {
+                transform: translateY(100vh) translateX(60px) rotate(180deg);
+                opacity: 0;
+            }
+        }
+
+        /* Pantalla de inicio con corazones */
+        .start-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+            background: radial-gradient(circle at 50% 50%, 
+                rgba(255, 255, 255, 0.25) 0%, 
+                transparent 70%);
+            padding: 20px;
+        }
+
+        .title-container {
+            position: relative;
+            text-align: center;
+        }
+
+        .title-hearts {
+            position: absolute;
+            font-size: 1.5rem;
+            color: #ff4d6d;
+            opacity: 0.7;
+            animation: pulseHearts 2s infinite;
+        }
+
+        @keyframes pulseHearts {
+            0%, 100% { transform: scale(1); opacity: 0.7; }
+            50% { transform: scale(1.2); opacity: 1; }
+        }
+
+        .main-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 5.5rem;
+            font-weight: 700;
+            color: #ff4d6d;
+            text-align: center;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+            text-shadow: 
+                2px 2px 4px rgba(0, 0, 0, 0.05),
+                0 0 40px rgba(255, 77, 109, 0.3);
+            animation: gentleFloat 4s ease-in-out infinite;
+            position: relative;
+        }
+
+        .main-title::before,
+        .main-title::after {
+            content: '❤️';
+            position: absolute;
+            font-size: 2.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0.8;
+            animation: heartBeat 1.5s infinite;
+        }
+
+        .main-title::before {
+            left: -60px;
+        }
+
+        .main-title::after {
+            right: -60px;
+        }
+
+        @keyframes heartBeat {
+            0%, 100% { transform: translateY(-50%) scale(1); }
+            50% { transform: translateY(-50%) scale(1.3); }
+        }
+
+        @keyframes gentleFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            color: #ff8fa3;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            margin-top: 10px;
+            font-weight: 300;
+            animation: fadeInOut 3s infinite;
+            position: relative;
+            padding: 0 40px;
+        }
+
+        .subtitle::before,
+        .subtitle::after {
+            content: '💖';
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+            opacity: 0.6;
+        }
+
+        .subtitle::before {
+            left: 0;
+        }
+
+        .subtitle::after {
+            right: 0;
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        .start-btn {
+            margin-top: 60px;
+            padding: 18px 50px;
+            background: transparent;
+            border: 2px solid #ff4d6d;
+            color: #ff4d6d;
+            font-size: 1.2rem;
+            font-weight: 500;
+            letter-spacing: 2px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .start-btn:hover {
+            background: rgba(255, 77, 109, 0.1);
+            letter-spacing: 4px;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(255, 77, 109, 0.2);
+        }
+
+        .start-btn::before {
+            content: '💝';
+            position: absolute;
+            right: 20px;
+            opacity: 0;
+            transition: all 0.3s;
+        }
+
+        .start-btn:hover::before {
+            opacity: 1;
+            right: 15px;
+        }
+
+        .start-btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255, 255, 255, 0.2), 
+                transparent);
+            transition: 0.5s;
+        }
+
+        .start-btn:hover::after {
+            left: 100%;
+        }
+
+        .instructions {
+            position: absolute;
+            bottom: 50px;
+            color: #ff8fa3;
+            font-size: 1rem;
+            text-align: center;
+            animation: pulse 2s infinite;
+            font-weight: 300;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        /* Cinemáticas con corazones */
+        .scene {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 20;
+            padding: 40px;
+            background: rgba(255, 240, 243, 0.88);
+            backdrop-filter: blur(3px);
+        }
+
+        .scene-content {
+            max-width: 700px;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(30px);
+            position: relative;
+        }
+
+        .scene-heart {
+            position: absolute;
+            font-size: 2rem;
+            color: #ff4d6d;
+            opacity: 0.6;
+            animation: sceneHeartFloat 3s infinite ease-in-out;
+        }
+
+        @keyframes sceneHeartFloat {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(15deg); }
+        }
+
+        .scene-text {
+            font-size: 1.8rem;
+            line-height: 1.7;
+            color: #590d22;
+            margin-bottom: 40px;
+            font-weight: 300;
+            letter-spacing: 0.5px;
+            padding: 40px 30px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(255, 77, 109, 0.1);
+            border: 1px solid rgba(255, 77, 109, 0.1);
+            position: relative;
+        }
+
+        .scene-text::before {
+            content: '❤️';
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2rem;
+            background: white;
+            padding: 0 20px;
+            opacity: 0.8;
+        }
+
+        .continue-btn {
+            padding: 15px 40px;
+            background: transparent;
+            border: 1px solid #ff4d6d;
+            color: #ff4d6d;
+            font-size: 1rem;
+            font-weight: 500;
+            letter-spacing: 2px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 20px;
+            position: relative;
+        }
+
+        .continue-btn:hover {
+            background: rgba(255, 77, 109, 0.1);
+            letter-spacing: 3px;
+            padding-right: 50px;
+        }
+
+        .continue-btn::after {
+            content: '💖';
+            position: absolute;
+            right: 15px;
+            opacity: 0;
+            transition: all 0.3s;
+        }
+
+        .continue-btn:hover::after {
+            opacity: 1;
+            right: 20px;
+        }
+
+        /* Pantalla final */
+        .final-scene {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 30;
+            background: rgba(255, 240, 243, 0.92);
+        }
+
+        .question-box {
+            text-align: center;
+            max-width: 600px;
+            padding: 50px;
+            animation: gentleAppear 1.5s ease-out;
+            position: relative;
+        }
+
+        @keyframes gentleAppear {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .final-question {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            color: #ff4d6d;
+            line-height: 1.3;
+            margin-bottom: 50px;
+            font-weight: 500;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.05);
+            position: relative;
+            padding: 0 60px;
+        }
+
+        .final-question::before,
+        .final-question::after {
+            content: '💘';
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2.5rem;
+            animation: questionHearts 2s infinite;
+        }
+
+        .final-question::before {
+            left: 0;
+        }
+
+        .final-question::after {
+            right: 0;
+        }
+
+        @keyframes questionHearts {
+            0%, 100% { transform: translateY(-50%) scale(1); }
+            50% { transform: translateY(-50%) scale(1.2); }
+        }
+
+        .sad-emojis {
+            font-size: 2.8rem;
+            margin: 25px 0;
+            opacity: 0;
+            animation: fadeInEmojis 1s forwards;
+            animation-delay: 0.5s;
+            letter-spacing: 10px;
+        }
+
+        @keyframes fadeInEmojis {
+            to {
+                opacity: 0.8;
+            }
+        }
+
+        .response-buttons {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            margin-top: 40px;
+        }
+
+        .response-btn {
+            padding: 18px 50px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 500;
+            letter-spacing: 1px;
+            transition: all 0.4s;
+            min-width: 160px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .yes-btn {
+            background: #ff4d6d;
+            color: white;
+            box-shadow: 0 8px 25px rgba(255, 77, 109, 0.3);
+        }
+
+        .yes-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(255, 77, 109, 0.4);
+            letter-spacing: 2px;
+            padding-right: 60px;
+        }
+
+        .yes-btn::after {
+            content: '❤️';
+            position: absolute;
+            right: 20px;
+            opacity: 0;
+            transition: all 0.3s;
+        }
+
+        .yes-btn:hover::after {
+            opacity: 1;
+            right: 25px;
+        }
+
+        .no-btn {
+            background: rgba(255, 255, 255, 0.9);
+            color: #ff4d6d;
+            border: 1px solid #ff4d6d;
+            box-shadow: 0 8px 25px rgba(255, 77, 109, 0.1);
+        }
+
+        .no-btn:hover {
+            background: rgba(255, 77, 109, 0.05);
+            transform: translateY(-3px);
+            letter-spacing: 2px;
+        }
+
+        /* Celebración */
+        .celebration {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 40;
+            background: linear-gradient(135deg, 
+                rgba(255, 240, 243, 0.92) 0%, 
+                rgba(255, 230, 234, 0.92) 100%);
+        }
+
+        .celebration-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            color: #ff4d6d;
+            text-align: center;
+            margin-bottom: 40px;
+            animation: gentleFloat 3s ease-in-out infinite;
+            font-weight: 600;
+            position: relative;
+            padding: 0 80px;
+        }
+
+        .celebration-title::before,
+        .celebration-title::after {
+            content: '🎉';
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 3rem;
+            animation: celebrationEmoji 2s infinite;
+        }
+
+        .celebration-title::before {
+            left: 0;
+        }
+
+        .celebration-title::after {
+            right: 0;
+        }
+
+        @keyframes celebrationEmoji {
+            0%, 100% { transform: translateY(-50%) rotate(0deg); }
+            25% { transform: translateY(-50%) rotate(-15deg); }
+            75% { transform: translateY(-50%) rotate(15deg); }
+        }
+
+        .message-box {
+            background: white;
+            padding: 50px;
+            border-radius: 20px;
+            max-width: 600px;
+            box-shadow: 0 20px 60px rgba(255, 77, 109, 0.15);
+            margin-top: 30px;
+            animation: slideUp 1s ease-out;
+            border: 1px solid rgba(255, 77, 109, 0.15);
+            position: relative;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(60px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message-text {
+            font-size: 1.3rem;
+            line-height: 1.8;
+            color: #590d22;
+            text-align: left;
+            font-weight: 300;
+        }
+
+        .message-text::first-letter {
+            font-size: 1.4rem;
+            color: #ff4d6d;
+            font-weight: 600;
+            float: left;
+            margin-right: 4px;
+        }
+
+        .signature {
+            margin-top: 30px;
+            text-align: right;
+            color: #ff4d6d;
+            font-style: italic;
+            font-size: 1.2rem;
+            padding-right: 29px;
+            position: relative;
+        }
+
+        .signature::before {
+            content: '💕';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.5rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 3.5rem;
+            }
+            
+            .main-title::before,
+            .main-title::after {
+                font-size: 1.8rem;
+            }
+            
+            .main-title::before {
+                left: -40px;
+            }
+            
+            .main-title::after {
+                right: -40px;
+            }
+            
+            .final-question {
+                font-size: 2.2rem;
+                padding: 0 40px;
+            }
+            
+            .final-question::before,
+            .final-question::after {
+                font-size: 1.8rem;
+            }
+            
+            .celebration-title {
+                font-size: 2.8rem;
+                padding: 0 50px;
+            }
+            
+            .celebration-title::before,
+            .celebration-title::after {
+                font-size: 2rem;
+            }
+            
+            .scene-text {
+                font-size: 1.5rem;
+            }
+            
+            .response-buttons {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .response-btn {
+                padding: 15px 40px;
+                min-width: 200px;
+            }
+            
+            .message-box {
+                padding: 30px;
+                margin: 20px;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- FONDO CON CORAZONES -->
+    <div class="background-hearts-container" id="backgroundHearts"></div>
+    
+    <!-- Pantalla de inicio -->
+    <div class="start-screen" id="startScreen">
+        <div class="title-container">
+            <div class="title-hearts" style="top: -30px; left: 20px;">💖</div>
+            <div class="title-hearts" style="top: -20px; right: 40px;">💗</div>
+            <div class="title-hearts" style="bottom: -30px; left: 40px;">💓</div>
+            <div class="title-hearts" style="bottom: -20px; right: 20px;">💞</div>
+            
+            <h1 class="main-title">Para Ti</h1>
+            <p class="subtitle">Una pregunta especial</p>
+        </div>
+        
+        <button class="start-btn" onclick="startStory()">
+            DESCUBRIR
+        </button>
+        <p class="instructions">Haz clic o presiona cualquier tecla</p>
+    </div>
+
+    <!-- Escena 1 -->
+    <div class="scene" id="scene1">
+        <div class="scene-content">
+            <div class="scene-heart" style="top: -20px; left: 20px;">❤️</div>
+            <div class="scene-heart" style="top: 10px; right: 30px;">💖</div>
+            <div class="scene-heart" style="bottom: 80px; left: 15%;">💗</div>
+            <div class="scene-heart" style="bottom: 100px; right: 10%;">💓</div>
+            
+            <div class="scene-text">
+                Hay momentos en los que todo encaja sin explicacion. Momentos que aunque sean simples, lo cambian todo y asi fue cuando apareciste en mi vida.
+            </div>
+            <button class="continue-btn" onclick="nextScene(2)">CONTINUAR</button>
+        </div>
+    </div>
+
+    <!-- Escena 2 -->
+    <div class="scene" id="scene2">
+        <div class="scene-content">
+            <div class="scene-heart" style="top: -15px; left: 15%;">💖</div>
+            <div class="scene-heart" style="top: 20px; right: 20%;">💗</div>
+            <div class="scene-heart" style="bottom: 90px; left: 10%;">💓</div>
+            
+            <div class="scene-text">
+                A veces la vida junta las piezas sin que uno se de cuenta. Nuestro encuentro fue una de esas veces. Algo normal que, sin planearlo, se volvio importante.
+            </div>
+            <button class="continue-btn" onclick="nextScene(3)">CONTINUAR</button>
+        </div>
+    </div>
+
+    <!-- Escena 3 -->
+    <div class="scene" id="scene3">
+        <div class="scene-content">
+            <div class="scene-heart" style="top: -25px; left: 30%;">💓</div>
+            <div class="scene-heart" style="top: 15px; right: 15%;">💞</div>
+            <div class="scene-heart" style="bottom: 85px; left: 25%;">💕</div>
+            
+            <div class="scene-text">
+                Siempre dicen que el hogar no es un lugar, sino una persona. Suena un poco a mentira o cliche hasta que lo vivis. Y con vos al fin lo entiendo, encontre mi hogar en mi personita. 
+            </div>
+            <button class="continue-btn" onclick="nextScene(4)">CONTINUAR</button>
+        </div>
+    </div>
+
+    <!-- Escena 4 -->
+    <div class="scene" id="scene4">
+        <div class="scene-content">
+            <div class="scene-heart" style="top: -20px; left: 20%;">💘</div>
+            <div class="scene-heart" style="top: 5px; right: 25%;">💝</div>
+            <div class="scene-heart" style="bottom: 95px; left: 15%;">❤️</div>
+            
+            <div class="scene-text">
+                Y ahora, con todo lo importante que sos para mi y todo lo que estamos construyendo, hay una pregunta que quiero hacerte...
+            </div>
+            <button class="continue-btn" onclick="showQuestion()">VER PREGUNTA</button>
+        </div>
+    </div>
+
+    <!-- Pantalla final -->
+    <div class="final-scene" id="finalScene">
+        <div class="question-box">
+            <h2 class="final-question">¿Queres ser mi San Valentín?</h2>
+            <div id="sadEmojis" class="sad-emojis"></div>
+            <div class="response-buttons">
+                <button class="response-btn yes-btn" onclick="celebrate()">SÍ</button>
+                <button class="response-btn no-btn" id="noBtn">NO</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Celebración -->
+    <div class="celebration" id="celebration">
+        <h2 class="celebration-title">Feliz San Valentín</h2>
+        <div class="message-box">
+            <div class="message-text">
+                <p>Gracias por decir que sí.</p>
+                <p>Este día es muy importante porque lo voy a compartir con vos y porque va a ser el primero de muchos. 
+                Prometo que será el inicio de muchos momentos hermosos juntos, 
+                de risas compartidas y de un amor que crece un poco mas todos los dias.</p>
+                <p>Sos una persona increible, y me siento afortunado de tenerte en mi vida. Te amo.</p>
+            </div>
+            <div class="signature">Con todo mi cariño</div>
+        </div>
+    </div>
+
+    <script>
+        // SISTEMA DE CORAZONES DE FONDO
+        class HeartBackgroundSystem {
+            constructor() {
+                this.container = document.getElementById('backgroundHearts');
+                this.createBackgroundHearts();
+                this.startFallingHearts();
+            }
+
+            createBackgroundHearts() {
+                // Crear corazones flotantes estáticos
+                for (let i = 0; i < 35; i++) {
+                    this.createFloatingHeart();
+                }
+            }
+
+            createFloatingHeart() {
+                const heart = document.createElement('div');
+                heart.className = 'floating-heart';
+                
+                // Tipos de corazones
+                const heartTypes = ['❤️', '💖', '💗', '💓', '💞', '💕', '💘', '💝'];
+                heart.innerHTML = heartTypes[Math.floor(Math.random() * heartTypes.length)];
+                
+                // Tamaño aleatorio
+                const size = Math.random() * 35 + 25;
+                heart.style.fontSize = size + 'px';
+                
+                // Color aleatorio en tonos rosas
+                const colors = ['#ff4d6d', '#ff758f', '#ff8fa3', '#ffb3c6'];
+                heart.style.color = colors[Math.floor(Math.random() * colors.length)];
+                
+                // Posición aleatoria
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.top = Math.random() * 100 + 'vh';
+                
+                // Duración y retraso aleatorios
+                const duration = Math.random() * 35 + 25;
+                const delay = Math.random() * 15;
+                heart.style.animationDuration = duration + 's';
+                heart.style.animationDelay = delay + 's';
+                
+                // Opacidad aleatoria
+                heart.style.opacity = Math.random() * 0.4 + 0.3;
+                
+                this.container.appendChild(heart);
+            }
+
+            startFallingHearts() {
+                // Capa de corazones cayendo
+                this.createFallingHeartLayer(25, 8, 12);
+                
+                // Crear corazones continuamente
+                setInterval(() => {
+                    this.createSingleFallingHeart(8, 12);
+                }, 700);
+            }
+
+            createFallingHeartLayer(count, minDuration, maxDuration) {
+                for (let i = 0; i < count; i++) {
+                    setTimeout(() => {
+                        this.createSingleFallingHeart(minDuration, maxDuration);
+                    }, i * (1500 / count));
+                }
+            }
+
+            createSingleFallingHeart(minDuration, maxDuration) {
+                const heart = document.createElement('div');
+                heart.className = 'falling-heart-bg';
+                
+                // Tipos de corazones
+                const heartTypes = ['❤️', '💖', '💗', '💓', '💞', '💕'];
+                heart.innerHTML = heartTypes[Math.floor(Math.random() * heartTypes.length)];
+                
+                // Color aleatorio
+                const colors = ['#ff4d6d', '#ff758f', '#ff8fa3'];
+                heart.style.color = colors[Math.floor(Math.random() * colors.length)];
+                
+                // Tamaño aleatorio
+                heart.style.fontSize = (Math.random() * 20 + 20) + 'px';
+                
+                // Posición inicial aleatoria
+                heart.style.left = Math.random() * 100 + 'vw';
+                
+                // Animación única
+                const duration = Math.random() * (maxDuration - minDuration) + minDuration;
+                const horizontalMove = (Math.random() - 0.5) * 120;
+                
+                // Crear keyframe dinámico
+                const animationName = `bgHeartAnim${Date.now()}${Math.random()}`;
+                const style = document.createElement('style');
+                style.textContent = `
+                    @keyframes ${animationName} {
+                        0% {
+                            transform: translateY(-100px) translateX(0px) rotate(0deg);
+                            opacity: 0;
+                        }
+                        10% {
+                            opacity: ${Math.random() * 0.4 + 0.3};
+                        }
+                        90% {
+                            opacity: ${Math.random() * 0.4 + 0.3};
+                        }
+                        100% {
+                            transform: translateY(100vh) translateX(${horizontalMove}px) rotate(${Math.random() * 360}deg);
+                            opacity: 0;
+                        }
+                    }
+                `;
+                
+                document.head.appendChild(style);
+                heart.style.animation = `${animationName} ${duration}s linear forwards`;
+                
+                this.container.appendChild(heart);
+                
+                // Eliminar después de la animación
+                setTimeout(() => {
+                    if (heart.parentNode) {
+                        heart.remove();
+                    }
+                    if (style.parentNode) {
+                        style.remove();
+                    }
+                }, duration * 1000);
+            }
+
+            createSadHearts(count = 25) {
+                for (let i = 0; i < count; i++) {
+                    setTimeout(() => {
+                        const heart = document.createElement('div');
+                        heart.className = 'falling-heart-bg';
+                        heart.innerHTML = '💔';
+                        heart.style.color = '#a4133c';
+                        heart.style.fontSize = '26px';
+                        heart.style.left = Math.random() * 100 + 'vw';
+                        
+                        const duration = Math.random() * 10 + 8;
+                        const horizontalMove = (Math.random() - 0.5) * 100;
+                        
+                        const animationName = `sadBgHeart${Date.now()}${Math.random()}`;
+                        const style = document.createElement('style');
+                        style.textContent = `
+                            @keyframes ${animationName} {
+                                0% {
+                                    transform: translateY(-100px) translateX(0px);
+                                    opacity: 0;
+                                }
+                                20% {
+                                    opacity: 0.6;
+                                }
+                                80% {
+                                    opacity: 0.6;
+                                }
+                                100% {
+                                    transform: translateY(100vh) translateX(${horizontalMove}px);
+                                    opacity: 0;
+                                }
+                            }
+                        `;
+                        
+                        document.head.appendChild(style);
+                        heart.style.animation = `${animationName} ${duration}s linear forwards`;
+                        
+                        this.container.appendChild(heart);
+                        
+                        setTimeout(() => {
+                            heart.remove();
+                            style.remove();
+                        }, duration * 1000);
+                    }, i * 150);
+                }
+            }
+
+            createCelebrationHearts(count = 60) {
+                for (let i = 0; i < count; i++) {
+                    setTimeout(() => {
+                        const heart = document.createElement('div');
+                        heart.className = 'falling-heart-bg';
+                        heart.innerHTML = '❤️';
+                        heart.style.color = '#ff4d6d';
+                        heart.style.fontSize = (Math.random() * 30 + 25) + 'px';
+                        heart.style.left = Math.random() * 100 + 'vw';
+                        
+                        const duration = Math.random() * 6 + 4;
+                        const horizontalMove = (Math.random() - 0.5) * 180;
+                        
+                        const animationName = `celebBgHeart${Date.now()}${Math.random()}`;
+                        const style = document.createElement('style');
+                        style.textContent = `
+                            @keyframes ${animationName} {
+                                0% {
+                                    transform: translateY(-100px) translateX(0px) rotate(0deg);
+                                    opacity: 0;
+                                }
+                                15% {
+                                    opacity: 0.7;
+                                }
+                                85% {
+                                    opacity: 0.7;
+                                }
+                                100% {
+                                    transform: translateY(100vh) translateX(${horizontalMove}px) rotate(${Math.random() * 720}deg);
+                                    opacity: 0;
+                                }
+                            }
+                        `;
+                        
+                        document.head.appendChild(style);
+                        heart.style.animation = `${animationName} ${duration}s linear forwards`;
+                        
+                        this.container.appendChild(heart);
+                        
+                        setTimeout(() => {
+                            heart.remove();
+                            style.remove();
+                        }, duration * 1000);
+                    }, i * 60);
+                }
+            }
+        }
+
+        // Variables
+        let heartBackground;
+        let noClicks = 0;
+        const sadEmojisList = ['😢', '😞', '😔', '🥺', '💔', '😭', '😰', '😥'];
+
+        // Inicializar
+        document.addEventListener('DOMContentLoaded', function() {
+            heartBackground = new HeartBackgroundSystem();
+            
+            // Animar corazones del título
+            animateTitleHearts();
+            
+            // Permitir inicio con tecla
+            document.addEventListener('keydown', function(e) {
+                if (document.getElementById('startScreen').style.display !== 'none') {
+                    startStory();
+                }
+            });
+            
+            // Configurar botón NO
+            const noBtn = document.getElementById('noBtn');
+            noBtn.addEventListener('click', handleNoClick);
+        });
+
+        function animateTitleHearts() {
+            const hearts = document.querySelectorAll('.title-hearts');
+            hearts.forEach((heart, index) => {
+                // Retraso diferente para cada corazón
+                heart.style.animationDelay = `${index * 0.5}s`;
+            });
+        }
+
+        // Funciones de navegación
+        window.startStory = function() {
+            const startScreen = document.getElementById('startScreen');
+            startScreen.style.opacity = '0';
+            startScreen.style.transition = 'opacity 1s';
+            
+            setTimeout(() => {
+                startScreen.style.display = 'none';
+                showScene(1);
+            }, 1000);
+        };
+
+        function showScene(sceneNumber) {
+            // Ocultar todas las escenas primero
+            document.querySelectorAll('.scene').forEach(scene => {
+                scene.style.display = 'none';
+                const content = scene.querySelector('.scene-content');
+                content.style.opacity = '0';
+                content.style.transform = 'translateY(30px)';
+            });
+
+            // Mostrar escena actual
+            const scene = document.getElementById('scene' + sceneNumber);
+            scene.style.display = 'flex';
+            
+            // Animar corazones de la escena
+            const sceneHearts = scene.querySelectorAll('.scene-heart');
+            sceneHearts.forEach((heart, index) => {
+                heart.style.animationDelay = `${index * 0.3}s`;
+            });
+            
+            // Animación suave de entrada
+            setTimeout(() => {
+                const content = scene.querySelector('.scene-content');
+                content.style.transition = 'opacity 1.2s, transform 1.2s';
+                content.style.opacity = '1';
+                content.style.transform = 'translateY(0)';
+            }, 100);
+        }
+
+        window.nextScene = function(nextNumber) {
+            showScene(nextNumber);
+        };
+
+        window.showQuestion = function() {
+            // Ocultar todas las escenas
+            document.querySelectorAll('.scene').forEach(scene => {
+                scene.style.display = 'none';
+            });
+            
+            // Mostrar pregunta final
+            const finalScene = document.getElementById('finalScene');
+            finalScene.style.display = 'flex';
+        };
+
+        function showSadEmojis() {
+            const sadEmojisContainer = document.getElementById('sadEmojis');
+            sadEmojisContainer.innerHTML = '';
+            
+            // Mostrar 4-6 emojis tristes aleatorios
+            const numEmojis = Math.floor(Math.random() * 3) + 4;
+            let emojis = '';
+            
+            for (let i = 0; i < numEmojis; i++) {
+                emojis += sadEmojisList[Math.floor(Math.random() * sadEmojisList.length)] + ' ';
+            }
+            
+            sadEmojisContainer.innerHTML = emojis;
+            sadEmojisContainer.style.opacity = '0';
+            sadEmojisContainer.style.animation = 'fadeInEmojis 1s forwards';
+            sadEmojisContainer.style.animationDelay = '0.3s';
+        }
+
+        function handleNoClick() {
+            noClicks++;
+            
+            // Mostrar emojis tristes
+            showSadEmojis();
+            
+            const responses = [
+                "Tal vez necesites un momento más para pensarlo...",
+                "Me gustaría que lo reconsideraras",
+                "Tu respuesta significa mucho para mí",
+                "¿Estás completamente segura?",
+                "Dime que sí, por favor"
+            ];
+            
+            const question = document.querySelector('.final-question');
+            if (noClicks <= responses.length) {
+                question.textContent = responses[noClicks - 1];
+                
+                // Crear corazones tristes en el fondo
+                heartBackground.createSadHearts(20);
+                
+                // Efecto sutil en la pregunta
+                question.style.opacity = '0.7';
+                setTimeout(() => {
+                    question.style.transition = 'opacity 0.5s';
+                    question.style.opacity = '1';
+                }, 10);
+            } else {
+                // Después de muchos intentos, celebrar
+                window.celebrate();
+            }
+            
+            // Mover ligeramente el botón NO
+            const noBtn = document.getElementById('noBtn');
+            if (noClicks > 1) {
+                const x = Math.random() * 40 - 20;
+                const y = Math.random() * 40 - 20;
+                noBtn.style.transform = `translate(${x}px, ${y}px)`;
+                
+                // Volver a la posición original después de un tiempo
+                setTimeout(() => {
+                    noBtn.style.transform = 'translate(0, 0)';
+                }, 300);
+            }
+            
+            // Cambiar texto del botón NO progresivamente
+            const noTexts = ["¿Seguro?", "Piénsalo", "Por favor", "Te amo", "¡SÍ!"];
+            noBtn.textContent = noTexts[Math.min(noClicks - 1, noTexts.length - 1)];
+        }
+
+        window.celebrate = function() {
+            // Ocultar pantalla actual
+            document.getElementById('finalScene').style.display = 'none';
+            
+            // Mostrar celebración
+            const celebration = document.getElementById('celebration');
+            celebration.style.display = 'flex';
+            
+            // Crear muchos corazones de celebración en el fondo
+            heartBackground.createCelebrationHearts(100);
+            
+            // Animación especial para el título de celebración
+            const title = document.querySelector('.celebration-title');
+            const colors = ['#ff4d6d', '#ff758f', '#ff8fa3', '#ffb3c6'];
+            let colorIndex = 0;
+            
+            setInterval(() => {
+                title.style.color = colors[colorIndex];
+                colorIndex = (colorIndex + 1) % colors.length;
+            }, 1500);
+        };
+
+        // Efecto de cursor con estela de corazones
+        let lastMouseTime = 0;
+        document.addEventListener('mousemove', function(e) {
+            const now = Date.now();
+            if (now - lastMouseTime > 100) {
+                // Crear corazón en la posición del cursor
+                const heart = document.createElement('div');
+                heart.className = 'falling-heart-bg';
+                heart.innerHTML = '❤️';
+                heart.style.color = '#ff4d6d';
+                heart.style.fontSize = '20px';
+                heart.style.left = e.clientX + 'px';
+                heart.style.top = e.clientY + 'px';
+                heart.style.position = 'fixed';
+                heart.style.zIndex = '1000';
+                
+                // Animación personalizada
+                const style = document.createElement('style');
+                style.textContent = `
+                    @keyframes cursorTrail {
+                        0% {
+                            opacity: 0.8;
+                            transform: translate(-50%, -50%) scale(1);
+                        }
+                        100% {
+                            opacity: 0;
+                            transform: translate(-50%, -80px) scale(0.3);
+                        }
+                    }
+                `;
+                
+                document.head.appendChild(style);
+                heart.style.animation = 'cursorTrail 1s linear forwards';
+                
+                document.getElementById('backgroundHearts').appendChild(heart);
+                
+                // Limpiar
+                setTimeout(() => {
+                    heart.remove();
+                    style.remove();
+                }, 1000);
+                
+                lastMouseTime = now;
+            }
+        });
+    </script>
+</body>
+</html>
